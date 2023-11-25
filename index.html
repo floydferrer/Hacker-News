@@ -19,11 +19,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Hack or Snooze</title>
-  <link
+  <!-- <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
       integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-      crossorigin="anonymous">
+      crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/site.css">
   <link rel="stylesheet" href="css/user.css">
   <link rel="stylesheet" href="css/stories.css">
@@ -33,26 +36,89 @@
 <body>
 
 <!-- top navigation bar -->
-<nav>
+<nav class="navbar navbar-expand-sm bg-warning">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" id="nav-home">Hack or Snooze</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <a class="nav-support main-nav pt-1" href="#" id="nav-submit">Submit</a>
+      <p class="nav-support fs-4 mb-0 mx-1">|</p> <!-- need to hide when window is sm-->
+      <a class="nav-support main-nav pt-1" href="#" id="nav-favorites">Favorites</a>
+      <p class="nav-support fs-4 mb-0 mx-1">|</p> <!-- need to hide when window is sm-->
+      <a class="nav-support main-nav pt-1" href="#" id="nav-myStories">My Stories</a>
+      <a class="nav-link nav-right pt-1 main-nav" href="#" id="nav-login">login/signup</a>
+      <a class="nav-link nav-right ms-0 pt-1 main-nav" href="#" id="nav-user-profile"></a>
+      <a class="nav-link nav-right pt-1 main-nav" href="#" id="nav-logout"></a>
+      <!-- logged out: nav-user-profile: ms-0; nav-logout: no margin class-->
+      <!-- logged in: nav-user-profile: no margin class; nav-logout: ms-1-->
+    
+    </div>
+  </div>
+</nav>
+
+<!-- <nav>
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
+    <a class="nav-link" href="#" id="nav-all">Submit</a>
+    <a class="nav-link" href="#" id="nav-all">Favorites</a>
+    <a class="nav-link" href="#" id="nav-all">My Stories</a>
   </div>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
   </div>
-</nav>
+</nav> -->
+
+<section class="submit-story-container container">
+  <!-- List of all stories -->
+  <div id="submit-story" style="display: none;">
+    <form id="submit-form" class="submit-story d-inline">
+      <div class="row">
+        <label for="author" class="col-form-label col-1 text-end">Author</label>
+        <input type="text" id="author" name="author" placeholder="author name" class="col-4">      
+      </div>
+      
+      <div class="row">
+        <label for="title" class="col-form-label col-1 text-end">Title</label>
+        <input type="text" id="title" name="title" placeholder="story title" class="col-4">
+      </div>
+        
+      <div class="row">
+        <label for="url" class="col-form-label col-1 text-end">URL</label>
+        <input type="url" id="url" name="url" placeholder="story url" class="col-4">
+      </div>
+        
+      <div class="row">
+        <div class="col-1 me-1"></div>
+        <input type="submit" id="submit-story-btn" class="btn btn-secondary col-1 py-1" value="submit">
+      </div>
+    </form>
+    <hr>
+  </div>
+</section>
 
 <!-- area for stories (all stories, user stories, favorites) -->
+
 <section class="stories-container container">
 
   <!-- loading message (removed by JS after stories loaded) -->
   <div id="stories-loading-msg">Loading&hellip;</div>
 
+
   <!-- List of all stories -->
   <ol id="all-stories-list" class="stories-list"></ol>
 
+</section>
+
+<!-- User Profile -->
+<section class="user-profile-container container" id="user-profile">
+  <!-- <h3>User Profile Info</h3>
+  <p>Name:</p>
+  <p>Username:</p>
+  <p>Account Created:</p> -->
 </section>
 
 <!-- Login and signup forms -->

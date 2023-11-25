@@ -29,6 +29,22 @@ a:hover {
   text-decoration: underline;
 }
 
+.star {
+  visibility:hidden;
+  font-size: 25px;
+  cursor:pointer; 
+}
+.star:before {
+ content: "\2606";
+ position: relative;
+ visibility: visible;
+ bottom: 10px;
+ right: 2px;
+}
+.star:checked:before {
+ content: "\2605";
+ position: relative;
+}
 
 /* Site layout */
 

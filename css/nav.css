@@ -1,6 +1,6 @@
-/* Navigation bar */
+Navigation bar
 
-nav {
+.nav {
   display: flex;
   background-color: #ff6600;
   align-items: center;
@@ -8,16 +8,31 @@ nav {
   border-radius: 3px 3px 0 0;
 }
 
+.navbar-collapse {
+  display: flexbox;
+  /* padding-top: 5px; */
+}
+
 .navbar-brand {
   font-weight: bold;
+  padding: 0;
 }
 
-.nav-link {
-  font-size: 0.85rem;
-  margin: 0 3px;
-}
 
 .nav-right {
+  display: flex;
   margin-left: auto;
   text-align: right;
+}
+
+.nav-support {
+  display: none;
+}
+
+#nav-profile {
+  display: none;
+}
+
+#nav-logout {
+  display: none;
 }

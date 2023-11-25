@@ -24,8 +24,9 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    const removeHttp = this.url.split('//');
+    const separateHost = removeHttp[1].split('/');
+    return separateHost[0];
   }
 }
 
@@ -73,8 +74,25 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
+  async addStory( user, newStory ) {
     // UNIMPLEMENTED: complete this function!
+    const response = await axios({
+      url: `${BASE_URL}/stories`,
+      method: "POST",
+      data: {
+        token: user.loginToken,
+        story: {
+          author: newStory.author,
+          title: newStory.title,
+          url: newStory.url
+        }
+      }
+    });
+
+    let { story } = response.data;
+
+    return new Story({storyId: story.storyId, title: story.title, author: story.author, url: story.url, username: story.username, createdAt: story.createdAt});
+    
   }
 }
 
@@ -193,4 +211,14 @@ class User {
       return null;
     }
   }
+}
+
+function generateProfile() {
+  const $profile = $(`
+    <h3 class='mt-3'>User Profile Info</h3>
+    <p>Name: ${currentUser.name}</p>
+    <p>Username: ${currentUser.username}</p>
+    <p>Account Created: ${currentUser.createdAt}</p>
+  `);
+  $userProfile.append($profile);
 }
