@@ -20,18 +20,21 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   console.debug("generateStoryMarkup", story);
-
+console.log(currentUser.favorites)
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
-      <input type="checkbox" class="star favorite-stories" name="favorite-stories"/>
+      <i class="fa-star favorite-stories ${currentUser.favorites.find(fav => fav.storyId === story.storyId) ? 'fas': 'fa'}"></i>
+      ${currentUser.ownStories.find(ownStory => ownStory.storyId === story.storyId) ? '<i class="trash fa-regular fa-trash-can delete-icon"></i>': ''}
         <label for="favorite-stories"></label>  
         <a href="${story.url}" target="a_blank" class="story-link">${story.title}</a>
         <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
+        <div class="story-author">by ${story.author}</div>
+        <div class="story-user">posted by ${story.username === currentUser.username ? 'Me': story.username}</div>
       </li>
     `);
+    //       <input type="checkbox" class="star favorite-stories" name="favorite-stories"/>
+
 }
 
 function favoritesHandler() {
@@ -45,6 +48,7 @@ function favoritesHandler() {
       data: { token: currentUser.loginToken },
     });
     currentUser.favorites = response.data.favorites;
+    console.log(currentUser)
   } else {
     $(e.target).removeAttr('checked');
     const response = await axios({
@@ -77,12 +81,12 @@ function putStoriesOnPage() {
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
-    if(currentUser){
-      if(currentUser.username === $allStoriesList.children()[$allStoriesList.children().length - 1].children[5].textContent.slice(10)) {
-        const $trash = $('<i class="trash fa-regular fa-trash-can"></i>');
-        $allStoriesList.children()[$allStoriesList.children().length - 1].prepend($trash[0]);
-      }
-    }    
+    // if(currentUser){
+    //   if(currentUser.username === $allStoriesList.children()[$allStoriesList.children().length - 1].children[5].textContent.slice(10)) {
+    //     const $trash = $('<i class="trash fa-regular fa-trash-can"></i>');
+    //     $allStoriesList.children()[$allStoriesList.children().length - 1].prepend($trash[0]);
+    //   }
+    // }    
   }
 
   if (currentUser) restoreFavorites();
@@ -96,13 +100,15 @@ function putStoriesOnPage() {
       method: "POST",
       params: { token: currentUser.loginToken },
     });
-    const response = await axios({
-      url: `${BASE_URL}/users/${currentUser.username}`,
-      method: "GET",
-      params: { token: currentUser.loginToken },
-    });
+    // const response = await axios({
+    //   url: `${BASE_URL}/users/${currentUser.username}`,
+    //   method: "GET",
+    //   params: { token: currentUser.loginToken },
+    // });
+    console.log({storyList})
+    const favStory = storyList.stories.find(fav => fav.storyId === e.target.parentElement.id)
     
-    currentUser.favorites = response.data.user.favorites;
+    currentUser.favorites.push(favStory)// = response.data.user.favorites;
 
     } else {
       $(e.target).removeAttr('checked');
@@ -111,13 +117,14 @@ function putStoriesOnPage() {
         method: "DELETE",
         params: { token: currentUser.loginToken },
       });
-      const response = await axios({
-        url: `${BASE_URL}/users/${currentUser.username}`,
-        method: "GET",
-        params: { token: currentUser.loginToken },
-      });
-      currentUser.favorites = response.data.user.favorites;
-    } 
+      // const response = await axios({
+      //   url: `${BASE_URL}/users/${currentUser.username}`,
+      //   method: "GET",
+      //   params: { token: currentUser.loginToken },
+      // });
+      currentUser.favorites = currentUser.favorites.filter(fav => fav.storyId !== e.target.parentElement.id)//response.data.user.favorites;
+    }
+    putStoriesOnPage()
   });
 
   $allStoriesList.show();
@@ -146,16 +153,17 @@ $submitForm.on("submit", postStory);
 
 //Delete User Story
 
-$(document).on('click', 'i', deleteStory);
+$(document).on('click', '.delete-icon', deleteStory);
 
 async function deleteStory(evt){
-  const response = await axios({
-    url: `${BASE_URL}/stories/${evt.target.parentElement.id}`,
-    method: "DELETE",
-    params: {
-      token: currentUser.loginToken,
-    }
-  });
+  await currentUser.deleteStory(evt.target.parentElement.id)
+  // const response = await axios({
+  //   url: `${BASE_URL}/stories/${evt.target.parentElement.id}`,
+  //   method: "DELETE",
+  //   params: {
+  //     token: currentUser.loginToken,
+  //   }
+  // });
   storyList = await StoryList.getStories();
   putStoriesOnPage();
 }

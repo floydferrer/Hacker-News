@@ -31,9 +31,20 @@
 }
 
 .story-author {
-  margin-left: 2em;
+  margin-left: 3em;
 }
 
 .story-user {
   display: block;
+  margin-left: 3em;
+
+}
+
+
+.fas {
+  color: black;
+}
+
+.no-fas {
+  color: transparent;
 }

@@ -91,8 +91,9 @@ class StoryList {
 
     let { story } = response.data;
 
-    return new Story({storyId: story.storyId, title: story.title, author: story.author, url: story.url, username: story.username, createdAt: story.createdAt});
-    
+    const userStory = new Story({storyId: story.storyId, title: story.title, author: story.author, url: story.url, username: story.username, createdAt: story.createdAt});
+    user.ownStories.push(userStory)
+    return userStory
   }
 }
 
@@ -210,6 +211,17 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  async deleteStory (id) {
+    const response = await axios({
+      url: `${BASE_URL}/stories/${id}`,
+      method: "DELETE",
+      params: {
+        token: currentUser.loginToken,
+      }
+    });
+    // return await StoryList.getStories();
   }
 }
 
