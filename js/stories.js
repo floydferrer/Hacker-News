@@ -34,28 +34,6 @@ function generateStoryMarkup(story) {
     `);
 }
 
-function favoritesHandler() {
-  $favoriteStories = $('.favorite-stories');
-  $favoriteStories.on('click', async function(e){
-  if (!$(e.target).attr('checked')) {
-    $(e.target).attr('checked', '');
-    const response = await axios({
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${e.target.parentElement.id}`,
-      method: "POST",
-      data: { token: currentUser.loginToken },
-    });
-    currentUser.favorites = response.data.favorites;
-  } else {
-    $(e.target).removeAttr('checked');
-    const response = await axios({
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${e.target.parentElement.id}`,
-      method: "DELETE",
-      data: { token: currentUser.loginToken },
-    })
-    currentUser.favorites = response.data.favorites;
-  } 
-});
-}
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function restoreFavorites() {
