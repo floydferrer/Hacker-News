@@ -10,7 +10,6 @@ Navigation bar
 
 .navbar-collapse {
   display: flexbox;
-  /* padding-top: 5px; */
 }
 
 .navbar-brand {
